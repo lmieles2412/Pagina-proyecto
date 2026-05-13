@@ -1,33 +1,27 @@
 const preguntas = {
     hardware: [
         { pregunta: "¿Cuál es el cerebro del computador?", opciones: ["Memoria RAM", "CPU", "Disco Duro", "BIOS"], correcta: "CPU" },
-        { pregunta: "¿Qué significa RAM?", opciones: ["Read Access Memory", "Random Access Memory", "Rapid Action Module", "Real Audio Memory"], correcta: "Random Access Memory" },
-        { pregunta: "¿Qué puerto se usa comúnmente para conectar periféricos?", opciones: ["SATA", "VGA", "USB", "HDMI"], correcta: "USB" }
+        
     ],
     redes: [
         { pregunta: "¿Qué significa IP?", opciones: ["Internet Protocol", "Internal Point", "Instant Page", "Information Path"], correcta: "Internet Protocol" },
-        { pregunta: "¿Cuál es la máscara de subred por defecto para Clase C?", opciones: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "192.168.1.1"], correcta: "255.255.255.0" },
-        { pregunta: "¿Qué dispositivo conecta diferentes redes entre sí?", opciones: ["Switch", "Hub", "Router", "Repetidor"], correcta: "Router" }
+        
     ],
     python: [
         { pregunta: "¿Cómo se define una función en Python?", opciones: ["func nombre():", "define nombre():", "def nombre():", "function nombre():"], correcta: "def nombre():" },
-        { pregunta: "¿Cuál es el símbolo para comentarios de una línea?", opciones: ["//", "/*", "#", "<!--"], correcta: "#" },
-        { pregunta: "¿Qué tipo de dato es '10'?", opciones: ["int", "float", "string", "bool"], correcta: "string" }
+        
     ],
     sistemas: [
         { pregunta: "¿Cuál de estos es un sistema operativo de código abierto?", opciones: ["Windows", "macOS", "Linux", "iOS"], correcta: "Linux" },
-        { pregunta: "¿Qué combinación de teclas cierra una ventana en Windows?", opciones: ["Alt + F4", "Ctrl + C", "Ctrl + V", "Alt + Tab"], correcta: "Alt + F4" },
-        { pregunta: "¿Cuál es el componente que gestiona los recursos del hardware?", opciones: ["Navegador", "Kernel (Núcleo)", "Antivirus", "Calculadora"], correcta: "Kernel (Núcleo)" }
+        
     ],
     seguridad: [
         { pregunta: "¿Qué es el 'Phishing'?", opciones: ["Un deporte", "Estafa para robar datos", "Un tipo de monitor", "Un cable de red"], correcta: "Estafa para robar datos" },
-        { pregunta: "¿Cuál es la contraseña más segura de estas?", opciones: ["123456", "password", "Admin.2024!*", "qwerty"], correcta: "Admin.2024!*" },
-        { pregunta: "¿Qué software protege tu PC de virus?", opciones: ["Firewall", "Antivirus", "WinZip", "Excel"], correcta: "Antivirus" }
+        
     ],
     software: [
         { pregunta: "¿Qué programa se usa principalmente para hojas de cálculo?", opciones: ["Word", "PowerPoint", "Excel", "Photoshop"], correcta: "Excel" },
-        { pregunta: "¿Qué extensión tiene un archivo de texto simple?", opciones: [".jpg", ".mp3", ".txt", ".exe"], correcta: ".txt" },
-        { pregunta: "¿Cómo se llama el software que permite navegar por internet?", opciones: ["Buscador", "Navegador", "Sitio Web", "Router"], correcta: "Navegador" }
+        
     ],
 };
 
