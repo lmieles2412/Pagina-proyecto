@@ -1,247 +1,140 @@
-/*
-Selector universal (*): aplica estilos a todos los elementos.
-'box-sizing: border-box;' facilita el cálculo de los anchos y las alturas.
-*/
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
-
-
-/* Estilos para el cuerpo de la página */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #10aac5;
-    color: #333;
+    background: #f0f2f5;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
 }
 
+.container {
+    max-width: 1000px;
+    width: 100%;
+}
 
-/* Estilos del header - Ya explicados */
-.main-header {
-    height: 100px;
+h1 { text-align: center; margin-bottom: 10px; color: #1a1a1a; }
+p { text-align: center; color: #666; margin-bottom: 40px; }
+
+/* Lobby Grid */
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.card-categoria {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: 0.3s;
+    border: 2px solid transparent;
+}
+
+.card-categoria:hover {
+    transform: translateY(-5px);
+    border-color: #ec4899;
+}
+
+.icono { font-size: 50px; display: block; margin-bottom: 15px; }
+
+.btn-comenzar {
+    background: #ec4899;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+/* Juego */
+.header-juego {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px;
-    position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
 }
 
-
-.main-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://images.unsplash.com/photo-1549692520-acc6669e262c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    filter: brightness(0.4);
+#btn-volver {
+    background: none;
+    border: none;
+    color: #ec4899;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    color: #fff;
-}
-
-
-.logo {
-    height: 50px;
-    margin-right: 15px;
-}
-
-
-.site-name {
-    font-size: 1.8rem;
-    font-weight: 600;
-}
-
-
-.main-nav ul {
-    list-style: none;
-    display: flex;
-}
-
-
-.main-nav li {
-    margin-left: 30px;
-}
-
-
-.main-nav a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 400;
-    transition: color 0.3s ease;
-}
-
-
-.main-nav a:hover {
-    color: #fca311;
-}
-
-
-/*
---- NUEVOS ESTILOS PARA EL CONTENIDO ---
-*/
-
-
-/*
-Estilos para el contenedor principal. Le damos espacio en los lados y
-un margen superior.
-*/
-.main-content {
-    padding: 40px 20px;
-    max-width: 1200px; /* Ancho máximo para que no se vea demasiado estirado */
-    margin: 20px auto; /* Centra el contenedor en la página */
-}
-
-
-/*
-El 'content-container' usará Flexbox para que la sección y el 'aside'
-estén uno al lado del otro.
-*/
-.content-container {
-    display: flex;
-    gap: 30px; /* Espacio entre la sección y el aside */
-    flex-wrap: wrap; /* Permite que los elementos se muevan a una nueva fila en pantallas pequeñas */
-}
-
-
-/*
-La 'main-section' será más ancha que el 'aside'.
-'flex: 2;' le da el doble de espacio que al 'aside' (que tiene 'flex: 1').
-*/
-.main-section {
-    flex: 2;
-    background-color: #fff;
+.pregunta-card {
+    background: white;
     padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-
-/*
-La imagen dentro de la sección.
-'width: 100%;' hace que la imagen ocupe todo el ancho de su contenedor.
-'height: auto;' mantiene la proporción de la imagen.
-*/
-.section-image {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 20px 0; /* Espacio arriba y abajo de la imagen */
-}
-
-
-/* Estilos para los títulos de la sección y el aside */
-.main-section h2, .main-aside h3 {
-    color: #0077b6; /* Un color llamativo para los títulos */
-    margin-bottom: 15px;
-}
-
-
-/*
-El 'aside' ocupa una porción menor del espacio.
-*/
-.main-aside {
-    flex: 1;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-
-/* Estilos para las listas de enlaces y redes sociales */
-.aside-links, .social-icons {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 20px;
-}
-
-
-.aside-links li {
-    margin-bottom: 10px;
-}
-
-
-.aside-links a {
-    text-decoration: none;
-    color: #0077b6;
-    transition: color 0.3s ease;
-}
-
-
-.aside-links a:hover {
-    color: #005f93;
-}
-
-
-/* Estilos para los íconos de redes sociales. Usamos Flexbox para alinearlos. */
-.social-icons {
-    display: flex;
-    gap: 20px; /* Espacio entre los íconos */
-}
-
-
-.social-icons a {
-    color: #fff;
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%; /* Hace que los íconos sean circulares */
-    transition: transform 0.3s ease;
-}
-
-
-/* Cambia el color de fondo de cada ícono */
-.fa-twitter { background-color: #1da1f2; }
-.fa-facebook { background-color: #3b5998; }
-.fa-instagram { background-color: #c13584; }
-
-
-/* Efecto al pasar el mouse por encima de los íconos */
-.social-icons a:hover {
-    transform: scale(1.1); /* Agranda el ícono al pasar el mouse */
-}
-
-
-/*
---- ESTILOS DEL FOOTER ---
-*/
-.main-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
+.opciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
     margin-top: 20px;
 }
 
-
-.main-footer p {
-    margin-bottom: 5px;
+.opcion {
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-
-.main-footer a {
-    color: #fca311;
-    text-decoration: none;
-    margin: 0 10px;
-    transition: color 0.3s ease;
+.opcion:hover { border-color: #ec4899; }
+/* Barra de progreso */
+.barra-progreso-fondo {
+    width: 100%;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
-
-.main-footer a:hover {
-    color: #ffd166;
+#barra-progreso-relleno {
+    width: 0%; /* Empieza en 0 */
+    height: 100%;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6);
+    transition: width 0.4s ease;
 }
+
+/* Animación de entrada para las tarjetas */
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.pregunta-card {
+    animation: aparecer 0.5s ease;
+}
+/* Mejora de los botones de opciones */
+.opcion {
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #4b5563;
+}
+
+.opcion:hover:not(:disabled) {
+    background: #fdf2f8;
+    border-color: #ec4899;
+    transform: scale(1.02);
+}
+.card-categoria[data-categoria="hardware"] { border-bottom: 5px solid #3b82f6; } /* Azul */
+.card-categoria[data-categoria="redes"] { border-bottom: 5px solid #10b981; }    /* Verde */
+.card-categoria[data-categoria="python"] { border-bottom: 5px solid #f59e0b; }   /* Naranja */
+.card-categoria[data-categoria="seguridad"] { border-bottom: 5px solid #ef4444; } /* Rojo */

@@ -3,71 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Ejemplo Completa</title>
+    <title>Quiz de Sistemas</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
+    <div class="container">
+        <!-- VISTA 1: EL LOBBY -->
+        <section id="vista-lobby">
+            <h1>Bienvenido al Quiz de Sistemas</h1>
+            <p>Selecciona una categoría para comenzar:</p>
+            
+            <div class="categorias-grid">
+                <!-- Nueva: Sistemas Operativos -->
+<div class="card-categoria" data-categoria="sistemas">
+    <span class="icono">💽</span>
+    <h3>Sistemas Operativos</h3>
+    <button class="btn-comenzar">Empezar Quiz</button>
+</div>
 
-    <header class="main-header">
-        <div class="logo-container">
-            <img src="logo.png" alt="Logo de la empresa" class="logo">
-            <h1 class="site-name">CompuQuizz</h1>
-        </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Servicios</a></li>
-                <li><a href="#">Contacto</a></li>
-            </ul>
-        </nav>
-    </header>
+<!-- Nueva: Ciberseguridad -->
+<div class="card-categoria" data-categoria="seguridad">
+    <span class="icono">🛡️</span>
+    <h3>Ciberseguridad</h3>
+    <button class="btn-comenzar">Empezar Quiz</button>
+</div>
 
+<!-- Nueva: Software -->
+<div class="card-categoria" data-categoria="software">
+    <span class="icono">📂</span>
+    <h3>Software</h3>
+    <button class="btn-comenzar">Empezar Quiz</button>
+</div>
+                <div class="card-categoria" data-categoria="hardware">
+                    <span class="icono">🖥️</span>
+                    <h3>Hardware</h3>
+                    <button class="btn-comenzar">Empezar Quiz</button>
+                </div>
 
-    <main class="main-content">
-        <div class="content-container">
+                <div class="card-categoria" data-categoria="redes">
+                    <span class="icono">🌐</span>
+                    <h3>Redes</h3>
+                    <button class="btn-comenzar">Empezar Quiz</button>
+                </div>
 
+                <div class="card-categoria" data-categoria="python">
+                    <span class="icono">🐍</span>
+                    <h3>Python</h3>
+                    <button class="btn-comenzar">Empezar Quiz</button>
+                </div>
+            </div>
+        </section>
 
-            <section class="main-section">
-                <h2>Nuestra Misión</h2>
-                <img src="https://images.unsplash.com/photo-1579546949432-ef2f2d49931b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Imagen de la misión" class="section-image">
-                <p>En el corazón de nuestro trabajo, nos esforzamos por crear soluciones innovadoras que inspiren y conecten a las personas. Creemos firmemente en el poder de la creatividad y la colaboración para construir un futuro mejor. Nuestro equipo está dedicado a transformar ideas en realidades tangibles y significativas para nuestros clientes y la comunidad.</p>
-            </section>
+        <!-- VISTA 2: EL JUEGO -->
 
+        <section id="vista-juego" style="display: none;">
+            <header class="header-juego">
+                
+<div class="barra-progreso-fondo">
+    <div id="barra-progreso-relleno"></div>
+</div>
+                <button id="btn-volver">← Volver al Lobby</button>
+                <div class="info-superior">
+                    <span id="nombre-categoria">CATEGORÍA</span>
+                    <div class="puntaje-mini">Puntos: <span id="puntaje">0</span></div>
+                </div>
+            </header>
 
-            <aside class="main-aside">
-                <h3>Noticias Relacionadas</h3>
-                <ul class="aside-links">
-                    <li><a href="#">Artículo sobre Tecnología Web</a></li>
-                    <li><a href="#">Innovación y Diseño Digital</a></li>
-                    <li><a href="#">Tendencias en Desarrollo Frontend</a></li>
-                </ul>
+            <div id="contenedor-preguntas"></div>
 
+            <div id="resultado-final" style="display:none;" class="pregunta-card">
+                <h3>¡Quiz Completado!</h3>
+                <p id="mensaje-puntos"></p>
+                <button id="btn-final-volver" class="btn-comenzar">Volver al Inicio</button>
+            </div>
+        </section>
+    </div>
 
-                <h3>Síguenos</h3>
-                <ul class="social-icons">
-                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                </ul>
-            </aside>
-
-
-        </div>
-    </main>
-
-
-    <footer class="main-footer">
-        <p>&copy; 2024 Nombre de la Empresa. Todos los derechos reservados.</p>
-        <p>
-            <a href="#">Política de Privacidad</a> | <a href="#">Términos de Servicio</a> | <a href="#">Contáctenos</a>
-        </p>
-    </footer>
-
-
+    <script src="script.js"></script>
 </body>
 </html>
