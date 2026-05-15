@@ -1,3 +1,43 @@
+// ============ MANEJO DEL TEMA OSCURO/CLARO ============
+function inicializarTema() {
+    const temaGuardado = localStorage.getItem('tema-quiz');
+    const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    let usarOscuro = temaGuardado ? temaGuardado === 'oscuro' : prefiereOscuro;
+    
+    aplicarTema(usarOscuro);
+}
+
+function aplicarTema(esOscuro) {
+    const html = document.documentElement;
+    const btnToggle = document.getElementById('btn-toggle-tema');
+    const icono = btnToggle.querySelector('.icono-tema');
+    
+    if (esOscuro) {
+        html.setAttribute('data-tema', 'oscuro');
+        html.style.colorScheme = 'dark';
+        icono.textContent = '☀️';
+        localStorage.setItem('tema-quiz', 'oscuro');
+    } else {
+        html.setAttribute('data-tema', 'claro');
+        html.style.colorScheme = 'light';
+        icono.textContent = '🌙';
+        localStorage.setItem('tema-quiz', 'claro');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarTema();
+    
+    const btnToggle = document.getElementById('btn-toggle-tema');
+    btnToggle.addEventListener('click', () => {
+        const html = document.documentElement;
+        const esOscuroActual = html.getAttribute('data-tema') === 'oscuro';
+        aplicarTema(!esOscuroActual);
+    });
+});
+
+// ============ PREGUNTAS Y LÓGICA DEL QUIZ ============
 const preguntas = {
         
   sistemas: [
