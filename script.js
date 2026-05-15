@@ -1,10 +1,6 @@
 const preguntas = {
-   sistemas: [
-        { pregunta: "¿Cuál es la función principal del Núcleo (Kernel)?", opciones: ["Interfaz gráfica", "Gestionar hardware", "Instalar apps", "Navegar"], correcta: "Gestionar hardware" },
-        { pregunta: "¿Qué sistema de archivos usa Windows 11 por defecto?", opciones: ["FAT32", "NTFS", "ext4", "APFS"], correcta: "NTFS" },
-        { pregunta: "¿Qué comando en CMD se usa para ver la configuración IP?", opciones: ["ls", "dir", "ipconfig", "cls"], correcta: "ipconfig" },
-        { pregunta: "¿Cómo se llama el software que comunica el SO con el hardware?", opciones: ["Firmware", "Driver", "API", "Plugin"], correcta: "Driver" },
-        { pregunta: "¿Qué combinación de teclas abre el Administrador de Tareas?", opciones: ["Alt+F4", "Ctrl+Alt+Supr", "Ctrl+Shift+Esc", "Win+L"], correcta: "Ctrl+Shift+Esc" },
+        
+    sistemas: [
         { pregunta: "¿Cuál de estos es un sistema operativo de código abierto?", opciones: ["Windows", "macOS", "Linux", "iOS"], correcta: "Linux" },
         { pregunta: "¿Qué es la memoria virtual?", opciones: ["RAM en la nube", "Uso de disco como RAM", "Memoria USB", "Caché"], correcta: "Uso de disco como RAM" },
         { pregunta: "¿Qué comando de Linux se usa para borrar un archivo?", opciones: ["rm", "del", "remove", "mkdir"], correcta: "rm" },
