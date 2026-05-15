@@ -1,11 +1,16 @@
 const preguntas = {
         
-    sistemas: [
-        { pregunta: "¿Cuál de estos es un sistema operativo de código abierto?", opciones: ["Windows", "macOS", "Linux", "iOS"], correcta: "Linux" },
-        { pregunta: "¿Qué es la memoria virtual?", opciones: ["RAM en la nube", "Uso de disco como RAM", "Memoria USB", "Caché"], correcta: "Uso de disco como RAM" },
-        { pregunta: "¿Qué comando de Linux se usa para borrar un archivo?", opciones: ["rm", "del", "remove", "mkdir"], correcta: "rm" },
-        { pregunta: "¿Qué herramienta de Windows permite editar el registro?", opciones: ["Dxdiag", "Regedit", "Msconfig", "Cmd"], correcta: "Regedit" },
-        { pregunta: "¿Qué significa que un sistema sea 'Plug and Play'?", opciones: ["Conectar y usar", "Requiere drivers manuales", "Solo para juegos", "Es de pago"], correcta: "Conectar y usar" }
+  sistemas: [
+        { pregunta: "¿Cuál es el cerebro del computador?", opciones: ["Memoria RAM", "CPU", "Disco Duro", "BIOS"], correcta: "CPU" },
+        { pregunta: "¿Qué tipo de memoria es volátil y pierde los datos al apagarse?", opciones: ["SSD", "ROM", "Memoria RAM", "Flash"], correcta: "Memoria RAM" },
+        { pregunta: "¿Qué componente mantiene la configuración de la BIOS y la hora?", opciones: ["La pila CMOS", "El procesador", "La fuente de poder", "El disipador"], correcta: "La pila CMOS" },
+        { pregunta: "¿Cuál es un dispositivo de almacenamiento de estado sólido?", opciones: ["HDD", "SSD", "RAM", "GPU"], correcta: "SSD" },
+        { pregunta: "¿Qué puerto se usa para conectar pantallas de alta definición?", opciones: ["USB-C", "HDMI", "VGA", "RJ-45"], correcta: "HDMI" },
+        { pregunta: "¿Cuál es la función principal de la Fuente de Poder?", opciones: ["Procesar datos", "Almacenar archivos", "Convertir corriente AC a DC", "Enfriar"], correcta: "Convertir corriente AC a DC" },
+        { pregunta: "¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
+        { pregunta: "¿Dónde se instalan la CPU, la RAM y las tarjetas?", opciones: ["Gabinete", "Tarjeta Madre", "Disco Duro", "Fuente"], correcta: "Tarjeta Madre" },
+        { pregunta: "¿Qué significa el término 'Overclocking'?", opciones: ["Formatear", "Aumentar velocidad del reloj", "Limpiar", "Actualizar"], correcta: "Aumentar velocidad del reloj" },
+        { pregunta: "¿Qué bus de expansión se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
     ],
     seguridad: [
         { pregunta: "¿Qué es el 'Phishing'?", opciones: ["Deporte", "Estafa para robar datos", "Monitor", "Cable"], correcta: "Estafa para robar datos" },
