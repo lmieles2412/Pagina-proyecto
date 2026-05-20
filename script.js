@@ -30,10 +30,55 @@ document.addEventListener('DOMContentLoaded', () => {
     inicializarTema();
     
     const btnToggle = document.getElementById('btn-toggle-tema');
-    btnToggle.addEventListener('click', () => {
+    const menuDesplegable = document.getElementById('menu-desplegable');
+    
+    // Alternar menú al hacer click en el botón
+    btnToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuDesplegable.style.display = menuDesplegable.style.display === 'none' ? 'flex' : 'none';
+    });
+    
+    // Cerrar menú al hacer click en cualquier lado
+    document.addEventListener('click', () => {
+        menuDesplegable.style.display = 'none';
+    });
+    
+    // Opción de cambiar tema
+    document.getElementById('opcion-tema').addEventListener('click', (e) => {
+        e.stopPropagation();
         const html = document.documentElement;
         const esOscuroActual = html.getAttribute('data-tema') === 'oscuro';
         aplicarTema(!esOscuroActual);
+        menuDesplegable.style.display = 'none';
+    });
+    
+    // Opción de salir de sesión
+    document.getElementById('opcion-salir').addEventListener('click', (e) => {
+        e.stopPropagation();
+        sessionStorage.removeItem('usuario-quiz');
+        window.location.href = 'login.html';
+        menuDesplegable.style.display = 'none';
+    });
+    
+    // Opción de información
+    document.getElementById('opcion-info').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('modal-info').style.display = 'flex';
+        menuDesplegable.style.display = 'none';
+    });
+    
+    // Cerrar modal
+    const btnCerrarModal = document.querySelector('.btn-cerrar-modal');
+    if (btnCerrarModal) {
+        btnCerrarModal.addEventListener('click', () => {
+            document.getElementById('modal-info').style.display = 'none';
+        });
+    }
+    
+    document.getElementById('modal-info').addEventListener('click', (e) => {
+        if (e.target.id === 'modal-info') {
+            document.getElementById('modal-info').style.display = 'none';
+        }
     });
 });
 
@@ -201,6 +246,11 @@ function finalizarQuiz() {
 function cambiarVista(mostrarJuego) {
     document.getElementById("vista-lobby").style.display = mostrarJuego ? "none" : "block";
     document.getElementById("vista-juego").style.display = mostrarJuego ? "block" : "none";
+    
+    // Limpiar datos del usuario cuando vuelve al lobby
+    if (!mostrarJuego) {
+        sessionStorage.removeItem('usuario-quiz');
+    }
 }
 
 document.querySelectorAll(".card-categoria").forEach(card => {
@@ -209,3 +259,37 @@ document.querySelectorAll(".card-categoria").forEach(card => {
 
 document.getElementById("btn-volver").onclick = () => cambiarVista(false);
 document.getElementById("btn-final-volver").onclick = () => cambiarVista(false);
+
+// ============ VERIFICACIÓN DE USUARIO ============
+document.addEventListener('DOMContentLoaded', () => {
+    const usuarioGuardado = sessionStorage.getItem('usuario-quiz');
+    
+    if (!usuarioGuardado) {
+        // Redirigir al login si no hay usuario
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Mostrar el nombre del usuario en el header
+    const usuario = JSON.parse(usuarioGuardado);
+    const header = document.querySelector('.header-juego');
+    
+    if (header) {
+        const infoHTML = `
+            <div class="info-usuario">
+                <span class="nombre-usuario">👤 ${usuario.nombre}</span>
+            </div>
+            <div class="barra-progreso-fondo">
+                <div id="barra-progreso-relleno"></div>
+            </div>
+            <button id="btn-volver">← Volver al Lobby</button>
+            <div class="info-superior">
+                <span id="nombre-categoria">CATEGORÍA</span>
+                <div class="puntaje-mini">Puntos: <span id="puntaje">0</span></div>
+            </div>
+        `;
+        header.innerHTML = infoHTML;
+        
+        document.getElementById("btn-volver").onclick = () => cambiarVista(false);
+    }
+});
