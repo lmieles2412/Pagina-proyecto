@@ -1,4 +1,4 @@
-// ============ MANEJO DEL TEMA OSCURO/CLARO ============
+// ============ MANEJO DEL TEMA OSCURO/CLARO Y MENÚS ============
 function inicializarTema() {
     const temaGuardado = localStorage.getItem('tema-quiz');
     const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -11,35 +11,96 @@ function inicializarTema() {
 function aplicarTema(esOscuro) {
     const html = document.documentElement;
     const btnToggle = document.getElementById('btn-toggle-tema');
-    const icono = btnToggle.querySelector('.icono-tema');
+    // Verificamos si existe el botón antes de buscar el ícono para evitar errores
+    const icono = btnToggle ? btnToggle.querySelector('.icono-tema') : null;
     
     if (esOscuro) {
         html.setAttribute('data-tema', 'oscuro');
         html.style.colorScheme = 'dark';
-        icono.textContent = '☀️';
+        if (icono) icono.textContent = '☀️';
         localStorage.setItem('tema-quiz', 'oscuro');
     } else {
         html.setAttribute('data-tema', 'claro');
         html.style.colorScheme = 'light';
-        icono.textContent = '🌙';
+        if (icono) icono.textContent = '🌙';
         localStorage.setItem('tema-quiz', 'claro');
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     inicializarTema();
-    actualizarEstadoLobbyVisual();
+    actualizarEstadoLobbyVisual(); // Muestra el progreso guardado en las tarjetas del lobby
     
     const btnToggle = document.getElementById('btn-toggle-tema');
-    btnToggle.addEventListener('click', () => {
-        const html = document.documentElement;
-        const esOscuroActual = html.getAttribute('data-tema') === 'oscuro';
-        aplicarTema(!esOscuroActual);
+    const menuDesplegable = document.getElementById('menu-desplegable');
+    
+    // Alternar menú al hacer click en el botón (Código de tu compañero)
+    if (btnToggle && menuDesplegable) {
+        btnToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuDesplegable.style.display = menuDesplegable.style.display === 'none' ? 'flex' : 'none';
+        });
+    }
+    
+    // Cerrar menú al hacer click en cualquier lado
+    document.addEventListener('click', () => {
+        if (menuDesplegable) menuDesplegable.style.display = 'none';
     });
+    
+    // Opción de cambiar tema
+    const opcionTema = document.getElementById('opcion-tema');
+    if (opcionTema) {
+        opcionTema.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const html = document.documentElement;
+            const esOscuroActual = html.getAttribute('data-tema') === 'oscuro';
+            aplicarTema(!esOscuroActual);
+            if (menuDesplegable) menuDesplegable.style.display = 'none';
+        });
+    }
+    
+    // Opción de salir de sesión
+    const opcionSalir = document.getElementById('opcion-salir');
+    if (opcionSalir) {
+        opcionSalir.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sessionStorage.removeItem('usuario-quiz');
+            window.location.href = 'login.html';
+            if (menuDesplegable) menuDesplegable.style.display = 'none';
+        });
+    }
+    
+    // Opción de información
+    const opcionInfo = document.getElementById('opcion-info');
+    if (opcionInfo) {
+        opcionInfo.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const modalInfo = document.getElementById('modal-info');
+            if (modalInfo) modalInfo.style.display = 'flex';
+            if (menuDesplegable) menuDesplegable.style.display = 'none';
+        });
+    }
+    
+    // Cerrar modal
+    const btnCerrarModal = document.querySelector('.btn-cerrar-modal');
+    if (btnCerrarModal) {
+        btnCerrarModal.addEventListener('click', () => {
+            const modalInfo = document.getElementById('modal-info');
+            if (modalInfo) modalInfo.style.display = 'none';
+        });
+    }
+    
+    const modalInfo = document.getElementById('modal-info');
+    if (modalInfo) {
+        modalInfo.addEventListener('click', (e) => {
+            if (e.target.id === 'modal-info') {
+                modalInfo.style.display = 'none';
+            }
+        });
+    }
 });
 
 // ============ PREGUNTAS Y LÓGICA DEL QUIZ ============
-// Se corrigió la duplicación de categorías para evitar conflictos en memoria
 const preguntas = {
     sistemas: [
         { pregunta: "¿Cuál es el cerebro del computador?", opciones: ["Memoria RAM", "CPU", "Disco Duro", "BIOS"], correcta: "CPU" },
@@ -48,19 +109,19 @@ const preguntas = {
         { pregunta: "¿Cuál es un dispositivo de almacenamiento de estado sólido?", opciones: ["HDD", "SSD", "RAM", "GPU"], correcta: "SSD" },
         { pregunta: "¿Qué puerto se usa para conectar pantallas de alta definición?", opciones: ["USB-C", "HDMI", "VGA", "RJ-45"], correcta: "HDMI" },
         { pregunta: "¿Cuál es la función principal de la Fuente de Poder?", opciones: ["Procesar datos", "Almacenar archivos", "Convertir corriente AC a DC", "Enfriar"], correcta: "Convertir corriente AC a DC" },
-        { pregunta: "¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
+        { pregunta: "🏼¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
         { pregunta: "¿Dónde se instalan la CPU, la RAM y las tarjetas?", opciones: ["Gabinete", "Tarjeta Madre", "Disco Duro", "Fuente"], correcta: "Tarjeta Madre" },
         { pregunta: "¿Qué significa el término 'Overclocking'?", opciones: ["Formatear", "Aumentar velocidad del reloj", "Limpiar", "Actualizar"], correcta: "Aumentar velocidad del reloj" },
-        { pregunta: "¿Qué bus de expansion se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
+        { pregunta: "¿Qué bus de expansión se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
     ],
     seguridad: [
         { pregunta: "¿Qué es el 'Phishing'?", opciones: ["Deporte", "Estafa para robar datos", "Monitor", "Cable"], correcta: "Estafa para robar datos" },
         { pregunta: "¿Qué hace un Ransomware?", opciones: ["Espía la cámara", "Cifra archivos y pide rescate", "Borra el BIOS", "Acelera el PC"], correcta: "Cifra archivos y pide rescate" },
         { pregunta: "¿Qué significan las siglas 2FA?", opciones: ["Doble procesador", "Autenticación de dos factores", "Segunda red", "Clave larga"], correcta: "Autenticación de dos factores" },
         { pregunta: "¿Qué protocolo hace que una página web sea segura?", opciones: ["HTTP", "FTP", "HTTPS", "DNS"], correcta: "HTTPS" },
-        { pregunta: "¿Qué es un 'Keylogger'?", opciones: ["Software que registra teclas", "Un antivirus", "Un tipo de teclado", "Un cable USB"], correcta: "Software que registra teclas" },
+        { pregunta: "🏼¿Qué es un 'Keylogger'?", opciones: ["Software que registra teclas", "Un antivirus", "Un tipo de teclado", "Un cable USB"], correcta: "Software que registra teclas" },
         { pregunta: "¿Qué herramienta bloquea el tráfico no deseado de internet?", opciones: ["Router", "Firewall", "Switch", "Hub"], correcta: "Firewall" },
-        { pregunta: "🏼¿Cuál es la función principal de una VPN?", opciones: ["Aumentar velocidad", "Cifrar la conexión", "Bajar virus", "Limpiar disco"], correcta: "Cifrar la conexión" },
+        { pregunta: "¿Cuál es la función principal de una VPN?", opciones: ["Aumentar velocidad", "Cifrar la conexión", "Bajar virus", "Limpiar disco"], correcta: "Cifrar la conexión" },
         { pregunta: "¿Qué es un ataque DDoS?", opciones: ["Robo de fotos", "Saturar un servidor con tráfico falso", "Cambiar la clave", "Quemar el CPU"], correcta: "Saturar un servidor con tráfico falso" },
         { pregunta: "¿Cómo se llama el hacker que busca fallos para repararlos?", opciones: ["Ciberdelincuente", "Hacker Ético", "Script Kiddie", "Cracker"], correcta: "Hacker Ético" },
         { pregunta: "¿Qué es un Troyano?", opciones: ["Virus oculto en programa legítimo", "Un antivirus", "Un cable de red", "Un firewall"], correcta: "Virus oculto en programa legítimo" }
@@ -69,10 +130,10 @@ const preguntas = {
         { pregunta: "¿Qué programa se usa principalmente para hojas de cálculo?", opciones: ["Word", "PowerPoint", "Excel", "Photoshop"], correcta: "Excel" },
         { pregunta: "¿Qué extensión define comúnmente a un instalador en Windows?", opciones: [".pdf", ".exe", ".zip", ".docx"], correcta: ".exe" },
         { pregunta: "¿Qué significa que un software sea 'Open Source'?", opciones: ["Es gratis siempre", "Código abierto para modificar", "Solo para Windows", "Sin soporte"], correcta: "Código abierto para modificar" },
-        { pregunta: "🏼¿Para qué se utiliza el software WinRAR?", opciones: ["Editar video", "Comprimir archivos", "Navegar", "Dibujar"], correcta: "Comprimir archivos" },
-        { pregunta: "¿Qué programa es un editor de código muy popular?", opciones: ["Paint", "Visual Studio Code", "Wordpad", "Excel"], correcta: "Visual Studio Code" },
+        { pregunta: "¿Para qué se utiliza el software WinRAR?", opciones: ["Editar video", "Comprimir archivos", "Navegar", "Dibujar"], correcta: "Comprimir archivos" },
+        { pregunta: "🏼¿Qué programa es un editor de código muy popular?", opciones: ["Paint", "Visual Studio Code", "Wordpad", "Excel"], correcta: "Visual Studio Code" },
         { pregunta: "¿Qué significa que un programa esté en fase 'Beta'?", opciones: ["Terminado", "Versión de prueba para errores", "Es la mejor versión", "Es antiguo"], correcta: "Versión de prueba para errores" },
-        { pregunta: "¿Cuál de estos es un navegador web?", opciones: ["Microsoft Edge", "Spotify", "Steam", "Zoom"], correcta: "Microsoft Edge" },
+        { pregunta: "🏼¿Cuál de estos es un navegador web?", opciones: ["Microsoft Edge", "Spotify", "Steam", "Zoom"], correcta: "Microsoft Edge" },
         { pregunta: "¿Qué suite de oficina incluye Word y PowerPoint?", opciones: ["Adobe", "Microsoft 365", "Google Drive", "Corel"], correcta: "Microsoft 365" },
         { pregunta: "¿Qué es un IDE?", opciones: ["Disco duro viejo", "Entorno de Desarrollo Integrado", "Un virus", "Una imagen"], correcta: "Entorno de Desarrollo Integrado" },
         { pregunta: "¿Qué tipo de software es una base de datos?", opciones: ["Software de Sistema", "Software de Aplicación", "Firmware", "Hardware"], correcta: "Software de Aplicación" }
@@ -84,10 +145,10 @@ const preguntas = {
         { pregunta: "¿Cuál es un dispositivo de almacenamiento de estado sólido?", opciones: ["HDD", "SSD", "RAM", "GPU"], correcta: "SSD" },
         { pregunta: "¿Qué puerto se usa para conectar pantallas de alta definición?", opciones: ["USB-C", "HDMI", "VGA", "RJ-45"], correcta: "HDMI" },
         { pregunta: "¿Cuál es la función principal de la Fuente de Poder?", opciones: ["Procesar datos", "Almacenar archivos", "Convertir corriente AC a DC", "Enfriar"], correcta: "Convertir corriente AC a DC" },
-        { pregunta: "🏼¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
+        { pregunta: "¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
         { pregunta: "¿Dónde se instalan la CPU, la RAM y las tarjetas?", opciones: ["Gabinete", "Tarjeta Madre", "Disco Duro", "Fuente"], correcta: "Tarjeta Madre" },
         { pregunta: "¿Qué significa el término 'Overclocking'?", opciones: ["Formatear", "Aumentar velocidad del reloj", "Limpiar", "Actualizar"], correcta: "Aumentar velocidad del reloj" },
-        { pregunta: "¿Qué bus de expansión se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
+        { pregunta: "🏼¿Qué bus de expansión se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
     ],
     redes: [
         { pregunta: "¿Qué significa IP?", opciones: ["Internet Protocol", "Internal Point", "Instant Page", "Information Path"], correcta: "Internet Protocol" },
@@ -104,7 +165,7 @@ const preguntas = {
     python: [
         { pregunta: "¿Cómo se define una función en Python?", opciones: ["func nombre():", "define nombre():", "def nombre():", "function nombre():"], correcta: "def nombre():" },
         { pregunta: "¿Qué tipo de dato es el resultado de 3 / 2 en Python 3?", opciones: ["int", "float", "str", "bool"], correcta: "float" },
-        { pregunta: "🏼¿Cuál es la forma correcta de crear una lista vacía?", opciones: ["{}", "()", "[]", "<>"], correcta: "[]" },
+        { pregunta: "¿Cuál es la forma correcta de crear una lista vacía?", opciones: ["{}", "()", "[]", "<>"], correcta: "[]" },
         { pregunta: "¿Qué imprime len('Python')?", opciones: ["5", "6", "7", "Error"], correcta: "6" },
         { pregunta: "¿Cuál de estas palabras es reservada en Python?", opciones: ["loop", "define", "class", "function"], correcta: "class" },
         { pregunta: "¿Qué operador se usa para potencia?", opciones: ["^", "**", "%", "//"], correcta: "**" },
@@ -120,8 +181,7 @@ let indicePreguntaActual = 0;
 let preguntasFiltradas = [];
 let categoriaActual = "";
 
-// ALGORITMO DEFENSIVO PROFESIONAL: Algoritmo de Fisher-Yates shuffle
-// Asegura una aleatoriedad matemáticamente real y óptima en JavaScript
+// Algoritmo Fisher-Yates para mezcla aleatoria real
 function mezclarArreglo(arreglo) {
     let copia = [...arreglo];
     for (let i = copia.length - 1; i > 0; i--) {
@@ -133,23 +193,24 @@ function mezclarArreglo(arreglo) {
 
 function actualizarBarra() {
     const progreso = (indicePreguntaActual / preguntasFiltradas.length) * 100;
-    document.getElementById("barra-progreso-relleno").style.width = `${progreso}%`;
+    const barra = document.getElementById("barra-progreso-relleno");
+    if (barra) barra.style.width = `${progreso}%`;
 }
 
 function iniciarQuiz(categoria) {
     categoriaActual = categoria;
     
+    // REVISAR SI HAY PROGRESO PAUSADO
     const progresoGuardado = localStorage.getItem(`quiz_progreso_${categoria}`);
     
     if (progresoGuardado) {
         const datos = JSON.parse(progresoGuardado);
         indicePreguntaActual = datos.indiceActual;
         puntaje = datos.puntajeAcumulado;
-        preguntasFiltradas = datos.listaPreguntas; 
+        preguntasFiltradas = datos.listaPreguntas;
     } else {
         puntaje = 0;
         indicePreguntaActual = 0;
-        // Llamada al nuevo algoritmo Fisher-Yates
         preguntasFiltradas = mezclarArreglo(preguntas[categoria]);
     }
     
@@ -190,6 +251,7 @@ function mostrarPregunta() {
                 btn.style.background = "#ef4444";
                 btn.style.color = "white";
                 
+                // Muestra la correcta para mejorar el aprendizaje
                 tarjeta.querySelectorAll(".opcion").forEach(b => {
                     if(b.textContent === p.correcta) {
                         b.style.background = "#22c55e";
@@ -201,6 +263,7 @@ function mostrarPregunta() {
             
             indicePreguntaActual++;
 
+            // GUARDAR PROGRESO LOCAL DE LA RONDA ACTUAL
             const progreso = {
                 indiceActual: indicePreguntaActual,
                 puntajeAcumulado: puntaje,
@@ -212,7 +275,8 @@ function mostrarPregunta() {
                 if(indicePreguntaActual < preguntasFiltradas.length) {
                     mostrarPregunta();
                 } else {
-                    document.getElementById("barra-progreso-relleno").style.width = `100%`;
+                    const barra = document.getElementById("barra-progreso-relleno");
+                    if (barra) barra.style.width = `100%`;
                     finalizarQuiz();
                 }
             }, 1000);
@@ -221,19 +285,23 @@ function mostrarPregunta() {
 }
 
 function finalizarQuiz() {
+    // Al terminar con éxito, borramos la pausa de esta categoría
     localStorage.removeItem(`quiz_progreso_${categoriaActual}`);
+    
     document.getElementById("contenedor-preguntas").style.display = "none";
     document.getElementById("resultado-final").style.display = "block";
     document.getElementById("mensaje-puntos").textContent = `Has completado el reto con ${puntaje} aciertos de ${preguntasFiltradas.length}.`;
     actualizarEstadoLobbyVisual();
 }
 
+// Funciones de navegación (Lobby)
 function cambiarVista(mostrarJuego) {
     document.getElementById("vista-lobby").style.display = mostrarJuego ? "none" : "block";
     document.getElementById("vista-juego").style.display = mostrarJuego ? "block" : "none";
     actualizarEstadoLobbyVisual();
 }
 
+// Genera las etiquetas "En progreso" dinámicas del lobby
 function actualizarEstadoLobbyVisual() {
     Object.keys(preguntas).forEach(cat => {
         const guardado = localStorage.getItem(`quiz_progreso_${cat}`);
@@ -266,5 +334,46 @@ document.querySelectorAll(".card-categoria").forEach(card => {
     card.onclick = () => iniciarQuiz(card.dataset.categoria);
 });
 
-document.getElementById("btn-volver").onclick = () => cambiarVista(false);
-document.getElementById("btn-final-volver").onclick = () => cambiarVista(false);
+// Vinculación de botones de navegación garantizados
+const btnVolver = document.getElementById("btn-volver");
+if (btnVolver) btnVolver.onclick = () => cambiarVista(false);
+
+const btnFinalVolver = document.getElementById("btn-final-volver");
+if (btnFinalVolver) btnFinalVolver.onclick = () => cambiarVista(false);
+
+
+// ============ VERIFICACIÓN DE USUARIO (Código del compañero) ============
+document.addEventListener('DOMContentLoaded', () => {
+    const usuarioGuardado = sessionStorage.getItem('usuario-quiz');
+    
+    if (!usuarioGuardado) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    const usuario = JSON.parse(usuarioGuardado);
+    const header = document.querySelector('.header-juego');
+    
+    if (header) {
+        const infoHTML = `
+            <div class="info-usuario">
+                <span class="nombre-usuario">👤 ${usuario.nombre}</span>
+            </div>
+            <div class="barra-progreso-fondo">
+                <div id="barra-progreso-relleno"></div>
+            </div>
+            <button id="btn-volver">← Volver al Lobby</button>
+            <div class="info-superior">
+                <span id="nombre-categoria">CATEGORÍA</span>
+                <div class="puntaje-mini">Puntos: <span id="puntaje">0</span></div>
+            </div>
+        `;
+        header.innerHTML = infoHTML;
+        
+        // Reconectar el evento del botón inyectado dinámicamente
+        const btnVolverDinamico = document.getElementById("btn-volver");
+        if (btnVolverDinamico) {
+            btnVolverDinamico.onclick = () => cambiarVista(false);
+        }
+    }
+});
