@@ -11,7 +11,6 @@ function inicializarTema() {
 function aplicarTema(esOscuro) {
     const html = document.documentElement;
     const btnToggle = document.getElementById('btn-toggle-tema');
-    // Verificamos si existe el botón antes de buscar el ícono para evitar errores
     const icono = btnToggle ? btnToggle.querySelector('.icono-tema') : null;
     
     if (esOscuro) {
@@ -29,12 +28,11 @@ function aplicarTema(esOscuro) {
 
 document.addEventListener('DOMContentLoaded', () => {
     inicializarTema();
-    actualizarEstadoLobbyVisual(); // Muestra el progreso guardado en las tarjetas del lobby
+    actualizarEstadoLobbyVisual(); 
     
     const btnToggle = document.getElementById('btn-toggle-tema');
     const menuDesplegable = document.getElementById('menu-desplegable');
     
-    // Alternar menú al hacer click en el botón (Código de tu compañero)
     if (btnToggle && menuDesplegable) {
         btnToggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -42,12 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Cerrar menú al hacer click en cualquier lado
     document.addEventListener('click', () => {
         if (menuDesplegable) menuDesplegable.style.display = 'none';
     });
     
-    // Opción de cambiar tema
     const opcionTema = document.getElementById('opcion-tema');
     if (opcionTema) {
         opcionTema.addEventListener('click', (e) => {
@@ -59,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Opción de salir de sesión
     const opcionSalir = document.getElementById('opcion-salir');
     if (opcionSalir) {
         opcionSalir.addEventListener('click', (e) => {
@@ -70,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Opción de información
     const opcionInfo = document.getElementById('opcion-info');
     if (opcionInfo) {
         opcionInfo.addEventListener('click', (e) => {
@@ -81,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Cerrar modal
     const btnCerrarModal = document.querySelector('.btn-cerrar-modal');
     if (btnCerrarModal) {
         btnCerrarModal.addEventListener('click', () => {
@@ -167,7 +160,7 @@ const preguntas = {
         { pregunta: "¿Qué tipo de dato es el resultado de 3 / 2 en Python 3?", opciones: ["int", "float", "str", "bool"], correcta: "float" },
         { pregunta: "¿Cuál es la forma correcta de crear una lista vacía?", opciones: ["{}", "()", "[]", "<>"], correcta: "[]" },
         { pregunta: "¿Qué imprime len('Python')?", opciones: ["5", "6", "7", "Error"], correcta: "6" },
-        { pregunta: "¿Cuál de estas palabras es reservada en Python?", opciones: ["loop", "define", "class", "function"], correcta: "class" },
+        { magneto: "🚀", pregunta: "¿Cuál de estas palabras es reservada en Python?", opciones: ["loop", "define", "class", "function"], correcta: "class" },
         { pregunta: "¿Qué operador se usa para potencia?", opciones: ["^", "**", "%", "//"], correcta: "**" },
         { pregunta: "¿Qué imprime type(10)?", opciones: ["float", "number", "int", "integer"], correcta: "int" },
         { pregunta: "¿Cuál es el resultado de 5 % 2?", opciones: ["2", "2.5", "1", "0"], correcta: "1" },
@@ -181,7 +174,6 @@ let indicePreguntaActual = 0;
 let preguntasFiltradas = [];
 let categoriaActual = "";
 
-// Algoritmo Fisher-Yates para mezcla aleatoria real
 function mezclarArreglo(arreglo) {
     let copia = [...arreglo];
     for (let i = copia.length - 1; i > 0; i--) {
@@ -199,8 +191,6 @@ function actualizarBarra() {
 
 function iniciarQuiz(categoria) {
     categoriaActual = categoria;
-    
-    // REVISAR SI HAY PROGRESO PAUSADO
     const progresoGuardado = localStorage.getItem(`quiz_progreso_${categoria}`);
     
     if (progresoGuardado) {
@@ -250,8 +240,6 @@ function mostrarPregunta() {
             } else {
                 btn.style.background = "#ef4444";
                 btn.style.color = "white";
-                
-                // Muestra la correcta para mejorar el aprendizaje
                 tarjeta.querySelectorAll(".opcion").forEach(b => {
                     if(b.textContent === p.correcta) {
                         b.style.background = "#22c55e";
@@ -260,10 +248,8 @@ function mostrarPregunta() {
                 });
             }
             document.querySelectorAll(".opcion").forEach(b => b.disabled = true);
-            
             indicePreguntaActual++;
 
-            // GUARDAR PROGRESO LOCAL DE LA RONDA ACTUAL
             const progreso = {
                 indiceActual: indicePreguntaActual,
                 puntajeAcumulado: puntaje,
@@ -285,23 +271,19 @@ function mostrarPregunta() {
 }
 
 function finalizarQuiz() {
-    // Al terminar con éxito, borramos la pausa de esta categoría
     localStorage.removeItem(`quiz_progreso_${categoriaActual}`);
-    
     document.getElementById("contenedor-preguntas").style.display = "none";
     document.getElementById("resultado-final").style.display = "block";
     document.getElementById("mensaje-puntos").textContent = `Has completado el reto con ${puntaje} aciertos de ${preguntasFiltradas.length}.`;
     actualizarEstadoLobbyVisual();
 }
 
-// Funciones de navegación (Lobby)
 function cambiarVista(mostrarJuego) {
     document.getElementById("vista-lobby").style.display = mostrarJuego ? "none" : "block";
     document.getElementById("vista-juego").style.display = mostrarJuego ? "block" : "none";
     actualizarEstadoLobbyVisual();
 }
 
-// Genera las etiquetas "En progreso" dinámicas del lobby
 function actualizarEstadoLobbyVisual() {
     Object.keys(preguntas).forEach(cat => {
         const guardado = localStorage.getItem(`quiz_progreso_${cat}`);
@@ -334,15 +316,13 @@ document.querySelectorAll(".card-categoria").forEach(card => {
     card.onclick = () => iniciarQuiz(card.dataset.categoria);
 });
 
-// Vinculación de botones de navegación garantizados
 const btnVolver = document.getElementById("btn-volver");
 if (btnVolver) btnVolver.onclick = () => cambiarVista(false);
 
 const btnFinalVolver = document.getElementById("btn-final-volver");
 if (btnFinalVolver) btnFinalVolver.onclick = () => cambiarVista(false);
 
-
-// ============ VERIFICACIÓN DE USUARIO (Código del compañero) ============
+// ============ VERIFICACIÓN DE USUARIO ============
 document.addEventListener('DOMContentLoaded', () => {
     const usuarioGuardado = sessionStorage.getItem('usuario-quiz');
     
@@ -370,7 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         header.innerHTML = infoHTML;
         
-        // Reconectar el evento del botón inyectado dinámicamente
         const btnVolverDinamico = document.getElementById("btn-volver");
         if (btnVolverDinamico) {
             btnVolverDinamico.onclick = () => cambiarVista(false);
