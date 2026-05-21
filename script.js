@@ -1,4 +1,4 @@
-// ============ MANEJO DEL TEMA OSCURO/CLARO ============
+// ============ MANEJO DEL TEMA OSCURO/CLARO Y MENÚS ============
 function inicializarTema() {
     const temaGuardado = localStorage.getItem('tema-quiz');
     const prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -11,88 +11,98 @@ function inicializarTema() {
 function aplicarTema(esOscuro) {
     const html = document.documentElement;
     const btnToggle = document.getElementById('btn-toggle-tema');
-    const icono = btnToggle.querySelector('.icono-tema');
+    const icono = btnToggle ? btnToggle.querySelector('.icono-tema') : null;
     
     if (esOscuro) {
         html.setAttribute('data-tema', 'oscuro');
         html.style.colorScheme = 'dark';
-        icono.textContent = '☀️';
+        if (icono) icono.textContent = '☀️';
         localStorage.setItem('tema-quiz', 'oscuro');
     } else {
         html.setAttribute('data-tema', 'claro');
         html.style.colorScheme = 'light';
-        icono.textContent = '🌙';
+        if (icono) icono.textContent = '🌙';
         localStorage.setItem('tema-quiz', 'claro');
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     inicializarTema();
+    actualizarEstadoLobbyVisual(); 
     
     const btnToggle = document.getElementById('btn-toggle-tema');
     const menuDesplegable = document.getElementById('menu-desplegable');
     
-    // Alternar menú al hacer click en el botón
-    btnToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDesplegable.style.display = menuDesplegable.style.display === 'none' ? 'flex' : 'none';
-    });
-    
-    // Cerrar menú al hacer click en cualquier lado
-    document.addEventListener('click', () => {
-        menuDesplegable.style.display = 'none';
-    });
-    
-    // Opción de cambiar tema
-    document.getElementById('opcion-tema').addEventListener('click', (e) => {
-        e.stopPropagation();
-        const html = document.documentElement;
-        const esOscuroActual = html.getAttribute('data-tema') === 'oscuro';
-        aplicarTema(!esOscuroActual);
-        menuDesplegable.style.display = 'none';
-    });
-    
-    // Opción de salir de sesión
-    document.getElementById('opcion-salir').addEventListener('click', (e) => {
-        e.stopPropagation();
-        sessionStorage.removeItem('usuario-quiz');
-        window.location.href = 'login.html';
-        menuDesplegable.style.display = 'none';
-    });
-    
-    // Opción de información
-    document.getElementById('opcion-info').addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.getElementById('modal-info').style.display = 'flex';
-        menuDesplegable.style.display = 'none';
-    });
-    
-    // Cerrar modal
-    const btnCerrarModal = document.querySelector('.btn-cerrar-modal');
-    if (btnCerrarModal) {
-        btnCerrarModal.addEventListener('click', () => {
-            document.getElementById('modal-info').style.display = 'none';
+    if (btnToggle && menuDesplegable) {
+        btnToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuDesplegable.style.display = menuDesplegable.style.display === 'none' ? 'flex' : 'none';
         });
     }
     
-    document.getElementById('modal-info').addEventListener('click', (e) => {
-        if (e.target.id === 'modal-info') {
-            document.getElementById('modal-info').style.display = 'none';
-        }
+    document.addEventListener('click', () => {
+        if (menuDesplegable) menuDesplegable.style.display = 'none';
     });
+    
+    const opcionTema = document.getElementById('opcion-tema');
+    if (opcionTema) {
+        opcionTema.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const html = document.documentElement;
+            const esOscuroActual = html.getAttribute('data-tema') === 'oscuro';
+            aplicarTema(!esOscuroActual);
+            if (menuDesplegable) menuDesplegable.style.display = 'none';
+        });
+    }
+    
+    const opcionSalir = document.getElementById('opcion-salir');
+    if (opcionSalir) {
+        opcionSalir.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sessionStorage.removeItem('usuario-quiz');
+            window.location.href = 'login.html';
+            if (menuDesplegable) menuDesplegable.style.display = 'none';
+        });
+    }
+    
+    const opcionInfo = document.getElementById('opcion-info');
+    if (opcionInfo) {
+        opcionInfo.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const modalInfo = document.getElementById('modal-info');
+            if (modalInfo) modalInfo.style.display = 'flex';
+            if (menuDesplegable) menuDesplegable.style.display = 'none';
+        });
+    }
+    
+    const btnCerrarModal = document.querySelector('.btn-cerrar-modal');
+    if (btnCerrarModal) {
+        btnCerrarModal.addEventListener('click', () => {
+            const modalInfo = document.getElementById('modal-info');
+            if (modalInfo) modalInfo.style.display = 'none';
+        });
+    }
+    
+    const modalInfo = document.getElementById('modal-info');
+    if (modalInfo) {
+        modalInfo.addEventListener('click', (e) => {
+            if (e.target.id === 'modal-info') {
+                modalInfo.style.display = 'none';
+            }
+        });
+    }
 });
 
 // ============ PREGUNTAS Y LÓGICA DEL QUIZ ============
 const preguntas = {
-        
-  sistemas: [
+    sistemas: [
         { pregunta: "¿Cuál es el cerebro del computador?", opciones: ["Memoria RAM", "CPU", "Disco Duro", "BIOS"], correcta: "CPU" },
         { pregunta: "¿Qué tipo de memoria es volátil y pierde los datos al apagarse?", opciones: ["SSD", "ROM", "Memoria RAM", "Flash"], correcta: "Memoria RAM" },
         { pregunta: "¿Qué componente mantiene la configuración de la BIOS y la hora?", opciones: ["La pila CMOS", "El procesador", "La fuente de poder", "El disipador"], correcta: "La pila CMOS" },
         { pregunta: "¿Cuál es un dispositivo de almacenamiento de estado sólido?", opciones: ["HDD", "SSD", "RAM", "GPU"], correcta: "SSD" },
         { pregunta: "¿Qué puerto se usa para conectar pantallas de alta definición?", opciones: ["USB-C", "HDMI", "VGA", "RJ-45"], correcta: "HDMI" },
         { pregunta: "¿Cuál es la función principal de la Fuente de Poder?", opciones: ["Procesar datos", "Almacenar archivos", "Convertir corriente AC a DC", "Enfriar"], correcta: "Convertir corriente AC a DC" },
-        { pregunta: "¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
+        { pregunta: "🏼¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
         { pregunta: "¿Dónde se instalan la CPU, la RAM y las tarjetas?", opciones: ["Gabinete", "Tarjeta Madre", "Disco Duro", "Fuente"], correcta: "Tarjeta Madre" },
         { pregunta: "¿Qué significa el término 'Overclocking'?", opciones: ["Formatear", "Aumentar velocidad del reloj", "Limpiar", "Actualizar"], correcta: "Aumentar velocidad del reloj" },
         { pregunta: "¿Qué bus de expansión se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
@@ -102,7 +112,7 @@ const preguntas = {
         { pregunta: "¿Qué hace un Ransomware?", opciones: ["Espía la cámara", "Cifra archivos y pide rescate", "Borra el BIOS", "Acelera el PC"], correcta: "Cifra archivos y pide rescate" },
         { pregunta: "¿Qué significan las siglas 2FA?", opciones: ["Doble procesador", "Autenticación de dos factores", "Segunda red", "Clave larga"], correcta: "Autenticación de dos factores" },
         { pregunta: "¿Qué protocolo hace que una página web sea segura?", opciones: ["HTTP", "FTP", "HTTPS", "DNS"], correcta: "HTTPS" },
-        { pregunta: "¿Qué es un 'Keylogger'?", opciones: ["Software que registra teclas", "Un antivirus", "Un tipo de teclado", "Un cable USB"], correcta: "Software que registra teclas" },
+        { pregunta: "🏼¿Qué es un 'Keylogger'?", opciones: ["Software que registra teclas", "Un antivirus", "Un tipo de teclado", "Un cable USB"], correcta: "Software que registra teclas" },
         { pregunta: "¿Qué herramienta bloquea el tráfico no deseado de internet?", opciones: ["Router", "Firewall", "Switch", "Hub"], correcta: "Firewall" },
         { pregunta: "¿Cuál es la función principal de una VPN?", opciones: ["Aumentar velocidad", "Cifrar la conexión", "Bajar virus", "Limpiar disco"], correcta: "Cifrar la conexión" },
         { pregunta: "¿Qué es un ataque DDoS?", opciones: ["Robo de fotos", "Saturar un servidor con tráfico falso", "Cambiar la clave", "Quemar el CPU"], correcta: "Saturar un servidor con tráfico falso" },
@@ -114,14 +124,13 @@ const preguntas = {
         { pregunta: "¿Qué extensión define comúnmente a un instalador en Windows?", opciones: [".pdf", ".exe", ".zip", ".docx"], correcta: ".exe" },
         { pregunta: "¿Qué significa que un software sea 'Open Source'?", opciones: ["Es gratis siempre", "Código abierto para modificar", "Solo para Windows", "Sin soporte"], correcta: "Código abierto para modificar" },
         { pregunta: "¿Para qué se utiliza el software WinRAR?", opciones: ["Editar video", "Comprimir archivos", "Navegar", "Dibujar"], correcta: "Comprimir archivos" },
-        { pregunta: "¿Qué programa es un editor de código muy popular?", opciones: ["Paint", "Visual Studio Code", "Wordpad", "Excel"], correcta: "Visual Studio Code" },
+        { pregunta: "🏼¿Qué programa es un editor de código muy popular?", opciones: ["Paint", "Visual Studio Code", "Wordpad", "Excel"], correcta: "Visual Studio Code" },
         { pregunta: "¿Qué significa que un programa esté en fase 'Beta'?", opciones: ["Terminado", "Versión de prueba para errores", "Es la mejor versión", "Es antiguo"], correcta: "Versión de prueba para errores" },
-        { pregunta: "¿Cuál de estos es un navegador web?", opciones: ["Microsoft Edge", "Spotify", "Steam", "Zoom"], correcta: "Microsoft Edge" },
+        { pregunta: "🏼¿Cuál de estos es un navegador web?", opciones: ["Microsoft Edge", "Spotify", "Steam", "Zoom"], correcta: "Microsoft Edge" },
         { pregunta: "¿Qué suite de oficina incluye Word y PowerPoint?", opciones: ["Adobe", "Microsoft 365", "Google Drive", "Corel"], correcta: "Microsoft 365" },
         { pregunta: "¿Qué es un IDE?", opciones: ["Disco duro viejo", "Entorno de Desarrollo Integrado", "Un virus", "Una imagen"], correcta: "Entorno de Desarrollo Integrado" },
         { pregunta: "¿Qué tipo de software es una base de datos?", opciones: ["Software de Sistema", "Software de Aplicación", "Firmware", "Hardware"], correcta: "Software de Aplicación" }
     ],
-
     hardware: [
         { pregunta: "¿Cuál es el cerebro del computador?", opciones: ["Memoria RAM", "CPU", "Disco Duro", "BIOS"], correcta: "CPU" },
         { pregunta: "¿Qué tipo de memoria es volátil y pierde los datos al apagarse?", opciones: ["SSD", "ROM", "Memoria RAM", "Flash"], correcta: "Memoria RAM" },
@@ -132,7 +141,7 @@ const preguntas = {
         { pregunta: "¿Qué componente disipa el calor directamente del procesador?", opciones: ["Extractor", "Ventilador", "Disipador", "Pasta térmica"], correcta: "Disipador" },
         { pregunta: "¿Dónde se instalan la CPU, la RAM y las tarjetas?", opciones: ["Gabinete", "Tarjeta Madre", "Disco Duro", "Fuente"], correcta: "Tarjeta Madre" },
         { pregunta: "¿Qué significa el término 'Overclocking'?", opciones: ["Formatear", "Aumentar velocidad del reloj", "Limpiar", "Actualizar"], correcta: "Aumentar velocidad del reloj" },
-        { pregunta: "¿Qué bus de expansión se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
+        { pregunta: "🏼¿Qué bus de expansión se usa para tarjetas gráficas modernas?", opciones: ["PCIe", "PCI", "AGP", "SATA"], correcta: "PCIe" }
     ],
     redes: [
         { pregunta: "¿Qué significa IP?", opciones: ["Internet Protocol", "Internal Point", "Instant Page", "Information Path"], correcta: "Internet Protocol" },
@@ -147,48 +156,59 @@ const preguntas = {
         { pregunta: "¿Qué tipo de cable se utiliza comúnmente en redes LAN cableadas?", opciones: ["Coaxial", "Fibra óptica", "UTP", "Cable paralelo"], correcta: "UTP" }
     ],
     python: [
-    { pregunta: "¿Cómo se define una función en Python?", opciones: ["func nombre():", "define nombre():", "def nombre():", "function nombre():"], correcta: "def nombre():" },
-
-    { pregunta: "¿Qué tipo de dato es el resultado de 3 / 2 en Python 3?", opciones: ["int", "float", "str", "bool"], correcta: "float" },
-
-    { pregunta: "¿Cuál es la forma correcta de crear una lista vacía?", opciones: ["{}", "()", "[]", "<>"], correcta: "[]" },
-
-    { pregunta: "¿Qué imprime len('Python')?", opciones: ["5", "6", "7", "Error"], correcta: "6" },
-
-    { pregunta: "¿Cuál de estas palabras es reservada en Python?", opciones: ["loop", "define", "class", "function"], correcta: "class" },
-
-    { pregunta: "¿Qué operador se usa para potencia?", opciones: ["^", "**", "%", "//"], correcta: "**" },
-
-    { pregunta: "¿Qué imprime type(10)?", opciones: ["float", "number", "int", "integer"], correcta: "int" },
-
-    { pregunta: "¿Cuál es el resultado de 5 % 2?", opciones: ["2", "2.5", "1", "0"], correcta: "1" },
-
-
-    { pregunta: "¿Qué imprime este código? for i in range(3): print(i)", opciones: ["1 2 3", "0 1 2", "0 1 2 3", "3 2 1"], correcta: "0 1 2" },
-
-    { pregunta: "¿Qué tipo de dato es {'nombre':'Ana','edad':20}?", opciones: ["Lista", "Tupla", "Diccionario", "Conjunto"], correcta: "Diccionario" }
-],
-        
-
+        { pregunta: "¿Cómo se define una función en Python?", opciones: ["func nombre():", "define nombre():", "def nombre():", "function nombre():"], correcta: "def nombre():" },
+        { pregunta: "¿Qué tipo de dato es el resultado de 3 / 2 en Python 3?", opciones: ["int", "float", "str", "bool"], correcta: "float" },
+        { pregunta: "¿Cuál es la forma correcta de crear una lista vacía?", opciones: ["{}", "()", "[]", "<>"], correcta: "[]" },
+        { pregunta: "¿Qué imprime len('Python')?", opciones: ["5", "6", "7", "Error"], correcta: "6" },
+        { magneto: "🚀", pregunta: "¿Cuál de estas palabras es reservada en Python?", opciones: ["loop", "define", "class", "function"], correcta: "class" },
+        { pregunta: "¿Qué operador se usa para potencia?", opciones: ["^", "**", "%", "//"], correcta: "**" },
+        { pregunta: "¿Qué imprime type(10)?", opciones: ["float", "number", "int", "integer"], correcta: "int" },
+        { pregunta: "¿Cuál es el resultado de 5 % 2?", opciones: ["2", "2.5", "1", "0"], correcta: "1" },
+        { pregunta: "¿Qué imprime este código? for i in range(3): print(i)", opciones: ["1 2 3", "0 1 2", "0 1 2 3", "3 2 1"], correcta: "0 1 2" },
+        { pregunta: "¿Qué tipo de dato es {'nombre':'Ana','edad':20}?", opciones: ["Lista", "Tupla", "Diccionario", "Conjunto"], correcta: "Diccionario" }
+    ]
 };
 
 let puntaje = 0;
 let indicePreguntaActual = 0;
 let preguntasFiltradas = [];
+let categoriaActual = "";
+
+function mezclarArreglo(arreglo) {
+    let copia = [...arreglo];
+    for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copia[i], copia[j]] = [copia[j], copia[i]];
+    }
+    return copia;
+}
 
 function actualizarBarra() {
-    const progreso = ((indicePreguntaActual) / preguntasFiltradas.length) * 100;
-    document.getElementById("barra-progreso-relleno").style.width = `${progreso}%`;
+    const progreso = (indicePreguntaActual / preguntasFiltradas.length) * 100;
+    const barra = document.getElementById("barra-progreso-relleno");
+    if (barra) barra.style.width = `${progreso}%`;
 }
 
 function iniciarQuiz(categoria) {
-    puntaje = 0;
-    indicePreguntaActual = 0;
-    preguntasFiltradas = preguntas[categoria];
+    categoriaActual = categoria;
+    const progresoGuardado = localStorage.getItem(`quiz_progreso_${categoria}`);
+    
+    if (progresoGuardado) {
+        const datos = JSON.parse(progresoGuardado);
+        indicePreguntaActual = datos.indiceActual;
+        puntaje = datos.puntajeAcumulado;
+        preguntasFiltradas = datos.listaPreguntas;
+    } else {
+        puntaje = 0;
+        indicePreguntaActual = 0;
+        preguntasFiltradas = mezclarArreglo(preguntas[categoria]);
+    }
+    
     document.getElementById("puntaje").textContent = puntaje;
     document.getElementById("nombre-categoria").textContent = categoria.toUpperCase();
     document.getElementById("resultado-final").style.display = "none";
     document.getElementById("contenedor-preguntas").style.display = "block";
+    
     actualizarBarra();
     cambiarVista(true);
     mostrarPregunta();
@@ -220,15 +240,29 @@ function mostrarPregunta() {
             } else {
                 btn.style.background = "#ef4444";
                 btn.style.color = "white";
+                tarjeta.querySelectorAll(".opcion").forEach(b => {
+                    if(b.textContent === p.correcta) {
+                        b.style.background = "#22c55e";
+                        b.style.color = "white";
+                    }
+                });
             }
             document.querySelectorAll(".opcion").forEach(b => b.disabled = true);
+            indicePreguntaActual++;
+
+            const progreso = {
+                indiceActual: indicePreguntaActual,
+                puntajeAcumulado: puntaje,
+                listaPreguntas: preguntasFiltradas
+            };
+            localStorage.setItem(`quiz_progreso_${categoriaActual}`, JSON.stringify(progreso));
             
             setTimeout(() => {
-                indicePreguntaActual++;
                 if(indicePreguntaActual < preguntasFiltradas.length) {
                     mostrarPregunta();
                 } else {
-                    document.getElementById("barra-progreso-relleno").style.width = `100%`;
+                    const barra = document.getElementById("barra-progreso-relleno");
+                    if (barra) barra.style.width = `100%`;
                     finalizarQuiz();
                 }
             }, 1000);
@@ -237,40 +271,66 @@ function mostrarPregunta() {
 }
 
 function finalizarQuiz() {
+    localStorage.removeItem(`quiz_progreso_${categoriaActual}`);
     document.getElementById("contenedor-preguntas").style.display = "none";
     document.getElementById("resultado-final").style.display = "block";
     document.getElementById("mensaje-puntos").textContent = `Has completado el reto con ${puntaje} aciertos de ${preguntasFiltradas.length}.`;
+    actualizarEstadoLobbyVisual();
 }
 
-// Funciones de navegación (Lobby)
 function cambiarVista(mostrarJuego) {
     document.getElementById("vista-lobby").style.display = mostrarJuego ? "none" : "block";
     document.getElementById("vista-juego").style.display = mostrarJuego ? "block" : "none";
-    
-    // Limpiar datos del usuario cuando vuelve al lobby
-    if (!mostrarJuego) {
-        sessionStorage.removeItem('usuario-quiz');
-    }
+    actualizarEstadoLobbyVisual();
+}
+
+function actualizarEstadoLobbyVisual() {
+    Object.keys(preguntas).forEach(cat => {
+        const guardado = localStorage.getItem(`quiz_progreso_${cat}`);
+        const tarjeta = document.querySelector(`.card-categoria[data-categoria="${cat}"]`);
+        
+        if (tarjeta) {
+            if (guardado) {
+                const datos = JSON.parse(guardado);
+                let indicador = tarjeta.querySelector(".status-guardado");
+                if (!indicador) {
+                    indicador = document.createElement("span");
+                    indicador.className = "status-guardado";
+                    indicador.style.display = "block";
+                    indicador.style.fontSize = "12px";
+                    indicador.style.color = "#8b5cf6";
+                    indicador.style.marginTop = "10px";
+                    indicador.style.fontWeight = "bold";
+                    tarjeta.appendChild(indicador);
+                }
+                indicador.innerText = `🔄 Progreso: Pregunta ${datos.indiceActual + 1}`;
+            } else {
+                const indicador = tarjeta.querySelector(".status-guardado");
+                if (indicador) indicador.remove();
+            }
+        }
+    });
 }
 
 document.querySelectorAll(".card-categoria").forEach(card => {
     card.onclick = () => iniciarQuiz(card.dataset.categoria);
 });
 
-document.getElementById("btn-volver").onclick = () => cambiarVista(false);
-document.getElementById("btn-final-volver").onclick = () => cambiarVista(false);
+const btnVolver = document.getElementById("btn-volver");
+if (btnVolver) btnVolver.onclick = () => cambiarVista(false);
+
+const btnFinalVolver = document.getElementById("btn-final-volver");
+if (btnFinalVolver) btnFinalVolver.onclick = () => cambiarVista(false);
 
 // ============ VERIFICACIÓN DE USUARIO ============
 document.addEventListener('DOMContentLoaded', () => {
     const usuarioGuardado = sessionStorage.getItem('usuario-quiz');
     
     if (!usuarioGuardado) {
-        // Redirigir al login si no hay usuario
         window.location.href = 'login.html';
         return;
     }
     
-    // Mostrar el nombre del usuario en el header
     const usuario = JSON.parse(usuarioGuardado);
     const header = document.querySelector('.header-juego');
     
@@ -290,6 +350,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         header.innerHTML = infoHTML;
         
-        document.getElementById("btn-volver").onclick = () => cambiarVista(false);
+        const btnVolverDinamico = document.getElementById("btn-volver");
+        if (btnVolverDinamico) {
+            btnVolverDinamico.onclick = () => cambiarVista(false);
+        }
     }
 });
