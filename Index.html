@@ -8,10 +8,26 @@
 </head>
 <body>
 
-    <!-- Toggle de tema -->
-    <button id="btn-toggle-tema" class="toggle-tema" aria-label="Cambiar tema">
-        <span class="icono-tema">🌙</span>
-    </button>
+    <!-- Toggle de tema con menú -->
+    <div class="menu-tema-container">
+        <button id="btn-toggle-tema" class="toggle-tema" aria-label="Menú de opciones">
+            <span class="icono-tema">🌙</span>
+        </button>
+        <div id="menu-desplegable" class="menu-desplegable" style="display: none;">
+            <button class="opcion-menu" id="opcion-tema">
+                <span class="icono-opcion">🌙</span>
+                <span class="texto-opcion">Cambiar Tema</span>
+            </button>
+            <button class="opcion-menu" id="opcion-salir">
+                <span class="icono-opcion">🚪</span>
+                <span class="texto-opcion">Salir de Sesión</span>
+            </button>
+            <button class="opcion-menu" id="opcion-info">
+                <span class="icono-opcion">❓</span>
+                <span class="texto-opcion">Información</span>
+            </button>
+        </div>
+    </div>
 
     <div class="container">
         <!-- VISTA 1: EL LOBBY -->
@@ -84,6 +100,30 @@
             </div>
         </section>
     </div>
+
+    <!-- Modal de Información -->
+    <div id="modal-info" class="modal" style="display: none;">
+        <div class="modal-contenido">
+            <button class="btn-cerrar-modal">&times;</button>
+            <h2>Sobre Quiz de Sistemas</h2>
+            <p>Este quiz es una plataforma educativa diseñada para poner a prueba y mejorar tus conocimientos en temas relacionados con sistemas informáticos.</p>
+            <h3>Categorías disponibles:</h3>
+            <ul>
+                <li><strong>Sistemas Operativos:</strong> Aprende sobre el software que controla el hardware</li>
+                <li><strong>Ciberseguridad:</strong> Protege tus datos y sistemas de amenazas</li>
+                <li><strong>Software:</strong> Conoce las aplicaciones y programas más importantes</li>
+                <li><strong>Hardware:</strong> Domina los componentes físicos de las computadoras</li>
+                <li><strong>Redes:</strong> Comprende cómo se conectan los dispositivos</li>
+                <li><strong>Python:</strong> Aprende uno de los lenguajes de programación más populares</li>
+            </ul>
+            <p>¡Pon a prueba tus conocimientos y mejora tus habilidades informáticas!</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-main">
+        <p>&copy; 2024 Quiz de Sistemas. Todos los derechos reservados.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
